@@ -1,14 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node
+node_modules/
+
 # OS
 .DS_Store
 Thumbs.db
-desktop.ini
 
-# Editor
-*.swp
-*.swo
-*~
-.vscode/
+# Editors
 .idea/
+.vscode/
+*.swp
 
-# Claude Code memory (local, not part of the project)
-.claude/memory/
+# Локальные настройки Claude Code — не коммитить
+.claude/settings.local.json

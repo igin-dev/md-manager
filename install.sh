@@ -1,57 +1,84 @@
 #!/bin/bash
-# install.sh — установка md-manager в целевой проект
+# install.sh — установка md-manager в целевой проект (Linux / macOS)
 #
 # Использование:
-#   ./install.sh                        # установить в текущую директорию
-#   ./install.sh /path/to/your/project  # установить в указанный проект
+#   ./install.sh /path/to/your/project
+#   ./install.sh /path/to/your/project --force   # перезаписать существующие
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TARGET="${1:-$(pwd)}"
+TARGET=""
+FORCE=false
+
+for arg in "$@"; do
+    if [ "$arg" = "--force" ]; then
+        FORCE=true
+    elif [ -z "$TARGET" ]; then
+        TARGET="$arg"
+    fi
+done
+
+TARGET="${TARGET:-$(pwd)}"
 
 echo "md-manager — установка"
 echo "Источник: $SCRIPT_DIR"
 echo "Цель:     $TARGET"
+$FORCE && echo "Режим:    --force (перезапись существующих файлов)"
 echo ""
 
-# Проверить что целевая директория существует
 if [ ! -d "$TARGET" ]; then
-  echo "Ошибка: директория $TARGET не существует"
-  exit 1
+    echo "Ошибка: директория $TARGET не существует"
+    exit 1
 fi
 
-# Создать структуру если не существует
-mkdir -p "$TARGET/.claude/commands"
-mkdir -p "$TARGET/.claude/agents"
+install_file() {
+    local src="$1"
+    local dst="$2"
+    if [ ! -f "$src" ]; then
+        echo "  Пропуск: $src (источник не найден)"
+        return
+    fi
+    local dir
+    dir="$(dirname "$dst")"
+    mkdir -p "$dir"
+    if [ -f "$dst" ] && [ "$FORCE" = false ]; then
+        echo "  Пропуск: ${dst#$TARGET/} (уже существует, используй --force)"
+    else
+        cp "$src" "$dst"
+        echo "  Установлен: ${dst#$TARGET/}"
+    fi
+}
 
-# Копировать slash-команды
-for cmd in md-init md-audit md-sync md-optimize; do
-  SRC="$SCRIPT_DIR/.claude/commands/$cmd.md"
-  DST="$TARGET/.claude/commands/$cmd.md"
-  if [ -f "$DST" ]; then
-    echo "⚠ Пропуск: $DST уже существует (используй --force для перезаписи)"
-  else
-    cp "$SRC" "$DST"
-    echo "✓ Установлен: .claude/commands/$cmd.md"
-  fi
+# Slash-команды
+for cmd in md-init md-audit md-fix md-sync md-optimize; do
+    install_file "$SCRIPT_DIR/.claude/commands/$cmd.md" "$TARGET/.claude/commands/$cmd.md"
 done
 
-# Копировать субагенты
+# Субагенты
 for agent in md-creator md-auditor md-optimizer; do
-  SRC="$SCRIPT_DIR/.claude/agents/$agent.md"
-  DST="$TARGET/.claude/agents/$agent.md"
-  if [ -f "$DST" ]; then
-    echo "⚠ Пропуск: $DST уже существует"
-  else
-    cp "$SRC" "$DST"
-    echo "✓ Установлен: .claude/agents/$agent.md"
-  fi
+    install_file "$SCRIPT_DIR/.claude/agents/$agent.md" "$TARGET/.claude/agents/$agent.md"
+done
+
+# Rules
+for f in "$SCRIPT_DIR/.claude/agents/rules/"*.md; do
+    [ -f "$f" ] && install_file "$f" "$TARGET/.claude/agents/rules/$(basename "$f")"
+done
+
+# Templates
+for f in "$SCRIPT_DIR/.claude/agents/templates/"*.md; do
+    [ -f "$f" ] && install_file "$f" "$TARGET/.claude/agents/templates/$(basename "$f")"
+done
+
+# Examples
+for f in "$SCRIPT_DIR/.claude/agents/examples/"*.md; do
+    [ -f "$f" ] && install_file "$f" "$TARGET/.claude/agents/examples/$(basename "$f")"
 done
 
 echo ""
-echo "Готово. Доступные команды:"
-echo "  /md-init        — создать новый CLAUDE.md"
-echo "  /md-audit       — проверить существующий файл"
-echo "  /md-sync        — обновить после изменений"
-echo "  /md-optimize    — оптимизировать разросшийся файл"
+echo "Готово. Доступные команды в Claude Code:"
+echo "  /md-init      — создать новый CLAUDE.md или другой MD-файл"
+echo "  /md-audit     — проверить файл по чеклисту качества"
+echo "  /md-fix       — исправить проблемы найденные аудитом"
+echo "  /md-sync      — обновить после изменений в проекте"
+echo "  /md-optimize  — оптимизировать разросшийся файл"
