@@ -56,9 +56,9 @@ chmod +x install.sh
 **Slash-команды** (`.claude/commands/`) — точки входа. Собирают контекст, вызывают субагенты через Agent tool, запрашивают подтверждение перед записью.
 
 **Субагенты** (`.claude/agents/`) — специализированная логика:
-- `md-auditor` — чеклист встроен в промпт (source of truth для кодов аудита), model: sonnet
-- `md-creator` — читает rules/ и examples/ через Read tool, model: sonnet  
-- `md-optimizer` — правила встроены в промпт, model: sonnet
+- `md-auditor` — чеклист встроен в промпт (source of truth для кодов аудита)
+- `md-creator` — читает rules/ и examples/ через Read tool
+- `md-optimizer` — правила встроены в промпт
 
 Субагенты не вызываются пользователем напрямую — только через Agent tool из команд.
 

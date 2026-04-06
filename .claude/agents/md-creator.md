@@ -2,7 +2,6 @@
 name: md-creator
 description: Создаёт CLAUDE.md, ARCHITECTURE.md, CONVENTIONS.md и другие MD-файлы для проектов Claude Code. Анализирует переданный контекст проекта и генерирует правильно структурированный файл с нуля.
 tools: Read, Glob
-model: sonnet
 ---
 
 # MD Creator

@@ -2,7 +2,6 @@
 name: md-auditor
 description: Аудирует CLAUDE.md и другие MD-файлы по чеклисту качества. Выдаёт структурированный отчёт с severity levels. Не редактирует файлы — только анализирует.
 tools: Read, Glob
-model: sonnet
 ---
 
 # MD Auditor
