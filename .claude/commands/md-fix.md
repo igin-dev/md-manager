@@ -12,7 +12,7 @@ allowed-tools: Read, Glob, Write, Agent
 
 ```
 /md-fix CLAUDE.md              # исправить все critical-проблемы
-/md-fix CLAUDE.md GOT-1 STR-2  # исправить конкретные пункты по коду
+/md-fix CLAUDE.md GOT-1 RED-1  # исправить конкретные пункты по коду
 /md-fix hub/CLAUDE.md          # файл по пути
 ```
 
@@ -22,7 +22,7 @@ allowed-tools: Read, Glob, Write, Agent
 
 Разбери `$ARGUMENTS`:
 - Только файл → исправить все critical-проблемы (запустить аудит сначала)
-- Файл + коды (GOT-1, STR-2 и т.д.) → исправить только указанные проблемы
+- Файл + коды (GOT-1, RED-1 и т.д.) → исправить только указанные проблемы
 
 **Шаг 2 — запустить аудит.**
 

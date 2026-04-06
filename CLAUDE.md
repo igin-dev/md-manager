@@ -19,7 +19,6 @@
     rules/           # вспомогательные правила (читаются md-creator через Read)
     templates/       # шаблоны для новых файлов
     examples/        # реальные примеры хороших MD-файлов
-templates/           # копии шаблонов для удобного просмотра
 install.ps1          # установка на Windows
 install.sh           # установка на Linux/macOS
 ```
