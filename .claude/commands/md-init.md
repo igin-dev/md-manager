@@ -1,5 +1,5 @@
 ---
-description: Создаёт новый CLAUDE.md или другой MD-файл (architecture, conventions) для проекта. Анализирует стек, структуру директорий и MCP-конфигурацию.
+description: Создаёт новый CLAUDE.md или другой MD-файл (architecture, conventions) для проекта. Use when the user asks to create, generate, or initialize a CLAUDE.md, ARCHITECTURE.md, or CONVENTIONS.md for a new project or subproject.
 argument-hint: "[claude|architecture|conventions|subproject <path>]"
 allowed-tools: Read, Glob, Write, Agent
 ---

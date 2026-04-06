@@ -1,5 +1,5 @@
 ---
-description: Оптимизирует разросшиеся MD-файлы — выносит детали в referenced файлы, убирает дублирование между уровнями иерархии, сжимает без потери смысла. Предлагает план перед выполнением.
+description: Оптимизирует разросшиеся MD-файлы — выносит детали в referenced файлы, убирает дублирование, сжимает без потери смысла. Use when the user says CLAUDE.md is too large, asks to optimize, compress, or restructure an MD file, or when the file has duplication.
 argument-hint: "[файл или директория]"
 allowed-tools: Read, Glob, Write, Agent
 ---

@@ -1,5 +1,5 @@
 ---
-description: Аудит CLAUDE.md и других MD-файлов по чеклисту качества. Находит проблемы и классифицирует по severity. Запускай перед крупными изменениями или когда файл давно не обновлялся.
+description: Аудит CLAUDE.md и других MD-файлов по чеклисту качества. Use when the user asks to check, review, audit, validate, or evaluate a CLAUDE.md or other project MD file.
 argument-hint: "[файл или директория]"
 allowed-tools: Read, Glob, Agent
 ---

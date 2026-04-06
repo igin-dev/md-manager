@@ -1,5 +1,5 @@
 ---
-description: Исправляет проблемы в MD-файле. Сначала запускает аудит, затем применяет конкретные правки с подтверждением перед записью.
+description: Исправляет проблемы в MD-файле по результатам аудита. Use when the user asks to fix, repair, or correct issues in a CLAUDE.md, or after an audit found critical problems.
 argument-hint: "[файл] [код-проблемы ...]"
 allowed-tools: Read, Glob, Write, Agent
 ---

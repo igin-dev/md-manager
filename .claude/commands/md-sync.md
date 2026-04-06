@@ -1,5 +1,5 @@
 ---
-description: Обновляет CLAUDE.md после изменений в проекте — новый MCP-сервер, смена стека, новый gotcha, новые соглашения. Определяет какой уровень иерархии затронут.
+description: Обновляет CLAUDE.md после изменений в проекте. Use when the user says they added an MCP server, changed the stack, found a new gotcha, or asks to sync/update CLAUDE.md with the current project state.
 argument-hint: "[файл] [описание изменения]"
 allowed-tools: Read, Write, Bash(git log:*), Bash(git diff:*)
 ---
