@@ -32,11 +32,13 @@ if [ ! -d "$TARGET" ]; then
     exit 1
 fi
 
+INSTALLED=0
+SKIPPED=0
+
 install_file() {
     local src="$1"
     local dst="$2"
     if [ ! -f "$src" ]; then
-        echo "  Пропуск: $src (источник не найден)"
         return
     fi
     local dir
@@ -44,9 +46,11 @@ install_file() {
     mkdir -p "$dir"
     if [ -f "$dst" ] && [ "$FORCE" = false ]; then
         echo "  Пропуск: ${dst#$TARGET/} (уже существует, используй --force)"
+        SKIPPED=$((SKIPPED + 1))
     else
         cp "$src" "$dst"
         echo "  Установлен: ${dst#$TARGET/}"
+        INSTALLED=$((INSTALLED + 1))
     fi
 }
 
@@ -76,7 +80,12 @@ for f in "$SCRIPT_DIR/.claude/agents/examples/"*.md; do
 done
 
 echo ""
-echo "Готово. Доступные команды в Claude Code:"
+echo "Установлено: $INSTALLED файлов. Пропущено: $SKIPPED."
+if [ "$INSTALLED" -eq 0 ] && [ "$SKIPPED" -gt 0 ]; then
+    echo "Все файлы уже существуют. Используй --force для перезаписи."
+fi
+echo ""
+echo "Доступные команды в Claude Code:"
 echo "  /md-init      — создать новый CLAUDE.md или другой MD-файл"
 echo "  /md-audit     — проверить файл по чеклисту качества"
 echo "  /md-fix       — исправить проблемы найденные аудитом"

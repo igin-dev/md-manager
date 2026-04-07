@@ -1,15 +1,26 @@
-# install.ps1 — установка md-manager в целевой проект (Windows)
+﻿# install.ps1 — установка md-manager в целевой проект (Windows)
 #
 # Использование:
 #   .\install.ps1 C:\path\to\your\project
 #   .\install.ps1 C:\path\to\your\project --force   # перезаписать существующие
 
 param(
-    [string]$Target = (Get-Location).Path,
+    [Parameter(Position=0)]
+    [string]$Target,
     [switch]$Force = $false
 )
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+if (-not $Target) { $Target = (Get-Location).Path }
+
+# Нормализуем путь для корректного сравнения (case-insensitive)
+$resolved = Resolve-Path $Target -ErrorAction SilentlyContinue
+if (-not $resolved) {
+    Write-Error "Директория $Target не существует"
+    exit 1
+}
+$Target = $resolved.Path
 
 Write-Host "md-manager — установка"
 Write-Host "Источник: $ScriptDir"
@@ -17,26 +28,24 @@ Write-Host "Цель:     $Target"
 if ($Force) { Write-Host "Режим:    --force (перезапись существующих файлов)" }
 Write-Host ""
 
-if (-not (Test-Path $Target)) {
-    Write-Error "Директория $Target не существует"
-    exit 1
-}
+$script:installed = 0
+$script:skipped = 0
 
 function Install-File {
     param([string]$Src, [string]$Dst)
     if (-not (Test-Path $Src)) {
-        Write-Host "  Пропуск: $Src (источник не найден)"
         return
     }
     $dir = Split-Path -Parent $Dst
     New-Item -ItemType Directory -Force -Path $dir | Out-Null
+    $rel = $Dst.Substring($Target.Length).TrimStart("\")
     if ((Test-Path $Dst) -and -not $Force) {
-        $rel = $Dst.Replace($Target, "").TrimStart("\")
         Write-Host "  Пропуск: $rel (уже существует, используй --force)"
+        $script:skipped++
     } else {
         Copy-Item $Src $Dst -Force
-        $rel = $Dst.Replace($Target, "").TrimStart("\")
         Write-Host "  Установлен: $rel"
+        $script:installed++
     }
 }
 
@@ -66,7 +75,12 @@ Get-ChildItem "$ScriptDir\.claude\agents\examples\*.md" -ErrorAction SilentlyCon
 }
 
 Write-Host ""
-Write-Host "Готово. Доступные команды в Claude Code:"
+Write-Host "Установлено: $($script:installed) файлов. Пропущено: $($script:skipped)."
+if ($script:installed -eq 0 -and $script:skipped -gt 0) {
+    Write-Host "Все файлы уже существуют. Используй --force для перезаписи."
+}
+Write-Host ""
+Write-Host "Доступные команды в Claude Code:"
 Write-Host "  /md-init      — создать новый CLAUDE.md или другой MD-файл"
 Write-Host "  /md-audit     — проверить файл по чеклисту качества"
 Write-Host "  /md-fix       — исправить проблемы найденные аудитом"
