@@ -22,7 +22,7 @@ chmod +x install.sh
 ./install.sh /path/to/your/project
 ```
 
-Скрипт копирует `.claude/commands/`, `.claude/agents/` (включая rules, templates, examples) в целевой проект. Существующие файлы не перезаписываются — для обновления добавь `--force`.
+Скрипт копирует `.claude/commands/`, `.claude/agents/` (включая rules и examples) в целевой проект. Существующие файлы не перезаписываются — для обновления добавь `--force`.
 
 ## Команды
 
@@ -99,7 +99,6 @@ md-manager/
       md-creator.md          # создаёт новые MD-файлы
       md-optimizer.md        # планирует оптимизацию
       rules/                 # 8 файлов — справочник для md-creator
-      templates/             # 3 шаблона (claude-md, architecture, conventions)
       examples/              # 4 примера реальных хороших файлов
   install.ps1                # установка Windows (PS 5.1+, UTF-8 BOM)
   install.sh                 # установка Linux / macOS

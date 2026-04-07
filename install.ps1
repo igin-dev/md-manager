@@ -64,11 +64,6 @@ Get-ChildItem "$ScriptDir\.claude\agents\rules\*.md" -ErrorAction SilentlyContin
     Install-File $_.FullName "$Target\.claude\agents\rules\$($_.Name)"
 }
 
-# Templates
-Get-ChildItem "$ScriptDir\.claude\agents\templates\*.md" -ErrorAction SilentlyContinue | ForEach-Object {
-    Install-File $_.FullName "$Target\.claude\agents\templates\$($_.Name)"
-}
-
 # Examples
 Get-ChildItem "$ScriptDir\.claude\agents\examples\*.md" -ErrorAction SilentlyContinue | ForEach-Object {
     Install-File $_.FullName "$Target\.claude\agents\examples\$($_.Name)"

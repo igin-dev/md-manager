@@ -57,7 +57,7 @@ allowed-tools: Read, Glob, Write, Agent
 Создай MD-файл для проекта.
 
 Тип файла: {claude-md | architecture-md | conventions-md}
-Тип проекта: {root | subproject | standalone}
+Тип проекта: {root | subproject | tool}
 
 Рабочая директория (корень проекта): {текущий путь}
 

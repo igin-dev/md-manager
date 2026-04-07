@@ -69,11 +69,6 @@ for f in "$SCRIPT_DIR/.claude/agents/rules/"*.md; do
     [ -f "$f" ] && install_file "$f" "$TARGET/.claude/agents/rules/$(basename "$f")"
 done
 
-# Templates
-for f in "$SCRIPT_DIR/.claude/agents/templates/"*.md; do
-    [ -f "$f" ] && install_file "$f" "$TARGET/.claude/agents/templates/$(basename "$f")"
-done
-
 # Examples
 for f in "$SCRIPT_DIR/.claude/agents/examples/"*.md; do
     [ -f "$f" ] && install_file "$f" "$TARGET/.claude/agents/examples/$(basename "$f")"
